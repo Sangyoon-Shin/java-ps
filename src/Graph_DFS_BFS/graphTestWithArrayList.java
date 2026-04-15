@@ -1,4 +1,4 @@
-package GraphDFS;
+package Graph_DFS_BFS;
 
 import java.io.*;
 import java.util.*;
@@ -42,7 +42,7 @@ public class graphTestWithArrayList {
     private static void dfs(int start){
         visited[start] = true;
         System.out.println("현재 방문하는 노드는: " + start);
-        for (int i : g[start]){ // g[start] 에는 start와 인접한 노드에 대한 정보가 ArrayList 형식으올 저장되어 있으니까
+        for (int i : g[start]){ // g[start] 에는 start와 인접한 노드에 대한 정보가 ArrayList 형식으로 저장되어 있으니까
             if (!visited[i]){ // 방문한 적 없으면 여기서 또 dfs 해주기
                 dfs(i);
             }

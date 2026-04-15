@@ -1,14 +1,27 @@
 import java.io.*;
 import java.util.*;
 
-public class Test {
+public class Test{
+    static ArrayList<String> d = new ArrayList<>();
+    static String str;
+    public static void main(String[] args) {
 
-    public static void main(String[] args) throws IOException {
-        int a = 10;
-        int b = 3;
-        double c = 10.0;
-        double d = 3.0;
-        System.out.println(a / b);
-        System.out.println(c / d);
+        str = "AEIOU";
+        dfs("");
+
+        for (String v : d){
+            System.out.println(v);
+        }
+        System.out.println(d.size());
+    }
+    public static void dfs(String s){
+        if (s.length() == 5){
+            return;
+        }
+        for (int i = 0; i < 5; i++){
+            String newstr = s + str.charAt(i);
+            d.add(newstr);
+            dfs(newstr);
+        }
     }
 }

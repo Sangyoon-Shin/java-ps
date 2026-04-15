@@ -2,65 +2,60 @@ import java.io.*;
 import java.util.*;
 
 public class Main{
-    static ArrayList<Integer>[] g; // 인접리스트로 그래프 표현
-    static int group[]; // 각 노드에서의 group이 뭔지 표현
-    static boolean visited[]; // 방문한 노드 표시
-    static boolean isPossible; // 이분 그래프가 가능한지
+    static int[][] map;
+    static boolean[][] visited;
+    static int[] dr = {-1, 1, 0, 0};
+    static int[] dc = {0, 0, 1, -1};
+    static int n;
+    static int cnt;
+    static ArrayList<Integer> res;
+
     public static void main(String[] args) throws IOException{
-
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int k = Integer.parseInt(br.readLine());
-        for (int i = 0; i < k; i++){
-            String[] s = br.readLine().split(" ");
-            int v = Integer.parseInt(s[0]);
-            int e = Integer.parseInt(s[1]);
 
-            g = new ArrayList[v + 1];
-            group = new int[v + 1];
-            visited = new boolean[v + 1];
-            isPossible = true;
+        n = Integer.parseInt(br.readLine());
+        map = new int[n][n];
+        visited = new boolean[n][n];
+        cnt = 0;
+        res = new ArrayList<>();
 
-            for (int j = 1; j <= v; j++){
-                g[j] = new ArrayList<Integer>(); // g는 각각 리스트를 담을 수 있는 배열인거고, 거기다 빈 리스트 생성하도록 초기화
+        for (int i = 0; i < n; i++){
+            String s = br.readLine();
+            for (int j = 0; j < n; j++){
+                map[i][j] = s.charAt(j) - '0';
             }
+        }
 
-            for (int j = 0; j < e; j++){
-                s = br.readLine().split(" ");
-                int start = Integer.parseInt(s[0]);
-                int end = Integer.parseInt(s[1]);
-                // 무방향이니까 양쪽 다 연결
-                g[start].add(end);
-                g[end].add(start);
+        for (int i = 0; i < n; i++){
+            for (int j = 0; j < n; j++){
+                if (map[i][j] == 1 && !visited[i][j]){
+                    cnt = 0;
+                    dfs(i, j);
+                    res.add(cnt);
+                }
             }
+        }
+        Collections.sort(res);
+        System.out.println(res.size());
+        for (int i = 0; i < res.size(); i++){
+            System.out.println(res.get(i));
+        }
+    }
+    static private void dfs(int r, int c){
+        visited[r][c] = true;
+        cnt++;
 
-            // 모든 노드가 연결되어있다는 보장이 없기에, 모든 노드에 대해 순회하며 dfs 실행
-            for (int j = 1; j <= v; j++){
-                if (isPossible){ // 아직까진 이분 그래프가 아닌 경우를 찾지 못한 경우에 한에서만 dfs 실행
-                    dfs(j); // isPossible이 false가 되는 순간 break; => 이분 그래프가 아닌 경우 찾음.
+        for (int i = 0; i < 4; i++){
+            int ddr = r + dr[i];
+            int ddc = c + dc[i];
+            if (ddr >= 0 && ddr < n && ddc >= 0 && ddc < n){
+                if (map[ddr][ddc] == 1 && !visited[ddr][ddc]){
+                    dfs(ddr, ddc);
                 } else {
-                    break;
+                    continue;
                 }
             }
+        }
+    }
 
-            if (isPossible){
-                System.out.println("YES");
-            } else {
-                System.out.println("NO");
-            }
-        }
-    }
-    private static void dfs(int start){
-        visited[start] = true; // 일단 start 노드를 방문한 노드로 업데이트
-        for (int i : g[start]){ // g[start]에는 결국, start 노드와 연결된 노드들의 정보가 있는 리스트가 있음. 그 리스트를 순회
-            if (!visited[i]){ // 다음에 가야할 노드가 방문전이고
-                group[i] = (group[start] + 1) % 2; // start가 0 그룹이었으면, i는 1그룹으로. 인접한 노드들은 서로 다른 그룹이어야 하므로
-                dfs(i);
-            } else {
-                // 다음 가야할 노드가 이미 방문한 노드인 경우
-                if (group[i] == group[start]){ // 인접한 애들끼리 같은 group인 경우에 flag 바꿔주기.
-                    isPossible = false;
-                }
-            }
-        }
-    }
 }

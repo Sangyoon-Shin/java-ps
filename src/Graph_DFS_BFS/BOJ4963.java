@@ -1,4 +1,4 @@
-package GraphDFS;
+package Graph_DFS_BFS;
 
 import java.io.*;
 import java.util.*;
