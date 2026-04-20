@@ -10,7 +10,7 @@ public class SWEA1959 {
 
         int t = Integer.parseInt(br.readLine());
 
-        for (int i = 1; i <= t; i++){
+        for (int tc = 1; tc <= t; tc++){
             st = new StringTokenizer(br.readLine());
             int n = Integer.parseInt(st.nextToken());
             int m = Integer.parseInt(st.nextToken());
@@ -19,45 +19,34 @@ public class SWEA1959 {
             int[] arr2 = new int[m];
 
             st = new StringTokenizer(br.readLine());
-
-            for (int j = 0; j < n; j++){
-                arr1[j] = Integer.parseInt(st.nextToken());
+            for (int i = 0; i < n; i++){
+                arr1[i] = Integer.parseInt(st.nextToken());
             }
 
             st = new StringTokenizer(br.readLine());
-
-            for (int j = 0; j < m; j++){
-                arr2[j] = Integer.parseInt(st.nextToken());
+            for (int i = 0; i < m; i++){
+                arr2[i] = Integer.parseInt(st.nextToken());
             }
 
-            int res = 0;
-            if (n < m){
-                int cnt = 0;
-                for (int j = 0; j < m - n + 1; j++){
-                    int sum = 0;
-                    for (int k = 0; k < n; k++){
-                        sum += (arr1[k] * arr2[k + cnt]);
-                    }
-                    cnt++;
-                    res = Math.max(res, sum);
-                }
-            } else if (n > m){
-                int cnt = 0;
-                for (int j = 0; j < n - m + 1; j++){
-                    int sum = 0;
-                    for (int k = 0; k < m; k++){
-                        sum += (arr2[k] * arr1[k + cnt]);
-                    }
-                    cnt++;
-                    res = Math.max(res, sum);
-                }
+            int[] shortArr, longArr;
+
+            if (n >= m){
+                shortArr = arr2;
+                longArr = arr1;
             } else {
-                for (int j = 0; j < n; j++){
-                    res += (arr1[j] * arr2[j]);
-                }
+                shortArr = arr1;
+                longArr = arr2;
             }
-            System.out.println("#" + i + " " + res);
 
+            int res = Integer.MIN_VALUE;
+            for (int i = 0; i <= longArr.length - shortArr.length; i++){
+                int sum = 0;
+                for (int j = 0; j < shortArr.length; j++){
+                    sum += shortArr[j] * longArr[j + i];
+                }
+                res = Math.max(res, sum);
+            }
+            System.out.println("#" + tc + " " + res);
         }
     }
 }
