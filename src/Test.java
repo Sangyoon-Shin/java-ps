@@ -6,22 +6,11 @@ public class Test{
     static String str;
     public static void main(String[] args) {
 
-        str = "AEIOU";
-        dfs("");
+        int[] arr = new int[] {1, 2, 3, 4, 5, 6, 7};
+        int[] dest = Arrays.copyOfRange(arr, 3, arr.length);
 
-        for (String v : d){
-            System.out.println(v);
-        }
-        System.out.println(d.size());
-    }
-    public static void dfs(String s){
-        if (s.length() == 5){
-            return;
-        }
-        for (int i = 0; i < 5; i++){
-            String newstr = s + str.charAt(i);
-            d.add(newstr);
-            dfs(newstr);
+        for (int i : dest){
+            System.out.print(i + " ");
         }
     }
 }
